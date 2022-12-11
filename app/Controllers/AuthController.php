@@ -35,7 +35,7 @@ class AuthController
     {
         $data = $request->getParsedBody();
 
-        $v = new Validator($_POST);
+        $v = new Validator($data);
         $v->rule('required', ['name', 'email', 'password', 'confirmPassword']);
         $v->rule('email', 'email');
         $v->rule('equals', 'confirmPassword', 'password')->label('Confirm Password');
@@ -58,5 +58,31 @@ class AuthController
         $this->entityManager->flush();
 
         return $response;
+    }
+
+    public function logIn(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+
+        $v = new Validator($data);
+        $v->rule('required', ['email', 'password']);
+        $v->rule('email', 'email');
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+
+        if (!$user || !password_verify($data['password'], $user->getPassword())) {
+            throw new ValidationException(['password' => ['You have entered an invalid username or password']]);
+        }
+
+        session_regenerate_id();
+
+        $_SESSION['user'] = $user->getId();
+
+        return $response->withHeader('Location', '/')->withStatus(302);
+    }
+
+    public function logOut(Request $request, Response $response): Response
+    {
+        return $response->withHeader('Location', '/')->withStatus(302);
     }
 }
