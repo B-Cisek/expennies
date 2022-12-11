@@ -13,7 +13,7 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": false
         }
     },
     "require": {
@@ -31,10 +31,10 @@
         "symfony/webpack-encore-bundle": "^1.15",
         "twig/intl-extra": "^3.4",
         "twig/twig": "^3.4",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "vlucas/valitron": "^1.4"
     },
     "require-dev": {
-        "nunomaduro/phpinsights": "^2.6",
         "phpunit/phpunit": "^9.5"
     }
 }
